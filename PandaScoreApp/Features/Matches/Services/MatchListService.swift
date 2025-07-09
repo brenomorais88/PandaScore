@@ -34,7 +34,7 @@ class MatchService: MatchServiceProtocol {
         guard let url = buildURL(forPage: page) else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
-
+        print(url)
         let request = URLRequest(url: url)
 
         return session.dataTaskPublisher(for: request)

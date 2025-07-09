@@ -35,4 +35,25 @@ struct Match: Decodable, Identifiable {
 
     var team1: Team? { opponents.first?.opponent }
     var team2: Team? { opponents.dropFirst().first?.opponent }
+
+    enum CodingKeys: String, CodingKey {
+        case id, opponents, league, serie, status, beginAt = "begin_at"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.opponents = try container.decode([Opponent].self, forKey: .opponents)
+        self.league = try container.decode(League.self, forKey: .league)
+        self.serie = try container.decode(Serie.self, forKey: .serie)
+        self.status = try container.decode(String.self, forKey: .status)
+
+        if let dateString = try? container.decodeIfPresent(String.self, forKey: .beginAt) {
+            self.beginAt = ISO8601DateFormatter().date(from: dateString)
+        } else {
+            self.beginAt = nil
+        }
+    }
 }
+

@@ -14,12 +14,13 @@ extension Date {
         formatter.dateFormat = "HH:mm"
 
         if Calendar.current.isDateInToday(self) {
-            return "Hoje, \(formatter.string(from: self))"
+            return "\(LocalizedStrings.DateLabel.today), \(formatter.string(from: self))"
         } else if Calendar.current.isDateInTomorrow(self) {
-            return "Amanhã, \(formatter.string(from: self))"
+            return "\(LocalizedStrings.DateLabel.tomorrow), \(formatter.string(from: self))"
         } else {
             formatter.dateFormat = "dd.MM HH:mm"
             return formatter.string(from: self)
         }
     }
 }
+

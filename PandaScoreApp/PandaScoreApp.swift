@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct PandaScoreApp: App {
+
+    private let matchService: MatchServiceProtocol = MatchService()
+    private var matchListViewModel: MatchListViewModel {
+        MatchListViewModel(service: matchService)
+    }
+
     var body: some Scene {
         WindowGroup {
-            MatchListView()
+            MatchListView(viewModel: matchListViewModel)
         }
     }
 }
