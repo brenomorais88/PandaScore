@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MatchListView: View {
+struct ContentView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,6 +20,6 @@ struct MatchListView: View {
 }
 
 #Preview {
-    MatchListView()
+    ContentView()
 }
 
