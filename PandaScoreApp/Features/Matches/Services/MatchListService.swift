@@ -29,20 +29,44 @@ class MatchService: MatchServiceProtocol {
     }
 
     // MARK: - Public Methods
-
     func fetchUpcomingMatches(page: Int) -> AnyPublisher<[Match], Error> {
         guard let url = buildURL(forPage: page) else {
+            print("❌ [MatchService] URL inválida.")
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
-        print(url)
+
+        print("🌐 [MatchService] Fetching from URL: \(url.absoluteString)")
         let request = URLRequest(url: url)
 
         return session.dataTaskPublisher(for: request)
-            .map(\.data)
+            .tryMap { result -> Data in
+                if let httpResponse = result.response as? HTTPURLResponse,
+                   !(200...299).contains(httpResponse.statusCode) {
+                    print("❌ [MatchService] Erro HTTP: \(httpResponse.statusCode)")
+                    throw URLError(.badServerResponse)
+                }
+                return result.data
+            }
             .decode(type: [Match].self, decoder: decoder)
+            .handleEvents(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    if let decodingError = error as? DecodingError {
+                        print("❌ [MatchService] Erro de parsing:")
+                        debugPrint(decodingError)
+                    } else if let urlError = error as? URLError {
+                        print("❌ [MatchService] Erro de rede: \(urlError)")
+                    } else {
+                        print("❌ [MatchService] Outro erro: \(error)")
+                    }
+                case .finished:
+                    print("✅ [MatchService] Partidas carregadas com sucesso.")
+                }
+            })
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
+
 
     // MARK: - Private Helpers
 
@@ -51,7 +75,7 @@ class MatchService: MatchServiceProtocol {
         guard let futureDate = Calendar.current.date(byAdding: .hour, value: hoursAhead, to: now) else {
             return nil
         }
-
+        
         let formatter = ISO8601DateFormatter()
         let fromString = formatter.string(from: now)
         let toString = formatter.string(from: futureDate)

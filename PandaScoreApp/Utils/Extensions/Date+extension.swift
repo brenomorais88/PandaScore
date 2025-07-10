@@ -8,6 +8,10 @@
 import Foundation
 
 extension Date {
+    var isToday: Bool {
+        Calendar.current.isDateInToday(self)
+    }
+
     func formattedHourLabel() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "pt_BR")
@@ -22,5 +26,11 @@ extension Date {
             return formatter.string(from: self)
         }
     }
-}
 
+    func formattedScheduleLabel() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.dateFormat = "dd.MM HH:mm"
+        return formatter.string(from: self)
+    }
+}

@@ -27,28 +27,33 @@ struct MatchListView: View {
                 }
             }
             .navigationTitle(LocalizedStrings.MatchList.title)
+            .foregroundStyle(.white)
+            .background(AppColors.background.ignoresSafeArea())
+            .toolbarBackground(AppColors.background, for: .navigationBar)
             .onAppear {
                 viewModel.fetchMatches()
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     private var matchList: some View {
-        List {
-            ForEach(viewModel.matches) { match in
-                MatchRow(match: match)
-                    .onAppear {
-                        if match.id == viewModel.matches.last?.id {
-                            viewModel.fetchMatches()
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                ForEach(viewModel.matches) { match in
+                    MatchRow(match: match)
+                        .onAppear {
+                            if match.id == viewModel.matches.last?.id {
+                                viewModel.fetchMatches()
+                            }
                         }
-                    }
-            }
+                }
 
-            if viewModel.isLoading {
-                loadingIndicator
+                if viewModel.isLoading {
+                    loadingIndicator
+                }
             }
         }
-        .listStyle(.plain)
         .refreshable {
             viewModel.refresh()
         }

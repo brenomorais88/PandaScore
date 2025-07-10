@@ -22,6 +22,11 @@ struct Match: Decodable, Identifiable {
     struct Team: Decodable {
         let name: String
         let imageUrl: String?
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case imageUrl = "image_url"
+        }
     }
 
     struct League: Decodable {
@@ -30,14 +35,20 @@ struct Match: Decodable, Identifiable {
     }
 
     struct Serie: Decodable {
-        let fullName: String
+        let fullName: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case fullName = "full_name"
+        }
     }
 
     var team1: Team? { opponents.first?.opponent }
     var team2: Team? { opponents.dropFirst().first?.opponent }
 
     enum CodingKeys: String, CodingKey {
-        case id, opponents, league, serie, status, beginAt = "begin_at"
+        case id, opponents, league, serie, status
+        case beginAt = "begin_at"
+        case fullName = "full_name"
     }
 
     init(from decoder: Decoder) throws {
@@ -54,6 +65,15 @@ struct Match: Decodable, Identifiable {
         } else {
             self.beginAt = nil
         }
+    }
+
+    init(id: Int, oponentes: [Opponent], league: League, serie: Serie, status: String, beginAt: Date?) {
+        self.id = id
+        self.opponents = oponentes
+        self.league = league
+        self.serie = serie
+        self.status = status
+        self.beginAt = beginAt
     }
 }
 

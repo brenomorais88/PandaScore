@@ -11,58 +11,121 @@ struct MatchRow: View {
     let match: Match
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                AsyncImage(url: URL(string: match.team1?.imageUrl ?? "")) { image in
-                    image.resizable()
-                } placeholder: {
-                    Circle().fill(Color.gray).frame(width: 40, height: 40)
-                }
-                .frame(width: 40, height: 40)
+        ZStack(alignment: .topTrailing) {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(AppColors.card)
+                .frame(height: 176)
+                .overlay(
+                    VStack(spacing: 0) {
+                        Spacer()
 
-                Text(match.team1?.name ?? LocalizedStrings.MatchRow.team1Placeholder)
+                        HStack {
+                            teamView(team: match.team1)
 
-                Spacer()
+                            Text(LocalizedStrings.MatchRow.versus)
+                                .font(.subheadline)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 24)
 
-                Text(LocalizedStrings.MatchRow.versus)
+                            teamView(team: match.team2)
+                        }
+                        .padding(.horizontal, 24)
 
-                Spacer()
+                        Spacer()
 
-                AsyncImage(url: URL(string: match.team2?.imageUrl ?? "")) { image in
-                    image.resizable()
-                } placeholder: {
-                    Circle().fill(Color.gray).frame(width: 40, height: 40)
-                }
-                .frame(width: 40, height: 40)
+                        Divider()
+                            .background(Color.white)
 
-                Text(match.team2?.name ?? LocalizedStrings.MatchRow.team2Placeholder)
-            }
+                        HStack(spacing: 8) {
+                            Circle()
+                                .fill(Color.gray)
+                                .frame(width: 16, height: 16)
 
-            HStack {
-                if let date = match.beginAt {
-                    Text(date.formattedHourLabel())
-                        .font(.caption)
-                        .padding(4)
-                        .background(Capsule().fill(Color.gray.opacity(0.2)))
-                }
+                            Text("\(match.league.name) • \(match.serie.fullName ?? "")")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                                .lineLimit(1)
 
-                Spacer()
+                            Spacer()
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(AppColors.card)
+                        .cornerRadius(12)
+                    }
+                )
 
-                if match.status == "running" {
-                    Text(LocalizedStrings.MatchRow.now)
-                        .font(.caption).bold()
-                        .foregroundColor(.white)
-                        .padding(4)
-                        .background(Capsule().fill(Color.red))
-                }
-            }
-
-            Text("\(match.league.name) • \(match.serie.fullName)")
-                .font(.footnote)
-                .foregroundColor(.gray)
+            badgeText
         }
-        .padding(.vertical, 8)
+        .padding(.horizontal, 25)
+        .padding(.vertical, 6)
+    }
+
+    private var badgeText: some View {
+        let text: String?
+        let background: Color
+
+        if match.status == LocalizedStrings.MatchRow.running {
+            text = LocalizedStrings.MatchRow.now
+            background = AppColors.liveRed
+
+        } else if let beginAt = match.beginAt {
+            if beginAt.isToday {
+                text = beginAt.formattedHourLabel()
+            } else {
+                text = beginAt.formattedScheduleLabel()
+            }
+            background = AppColors.todayGray.opacity(0.2)
+
+        } else {
+            text = nil
+            background = .clear
+        }
+
+        return Group {
+            if let text {
+                Text(text)
+                    .font(.caption2).bold()
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(background)
+                    .clipShape(RoundedCorner(radius: 8, corners: [.topRight, .bottomLeft]))
+            }
+        }
+    }
+
+    private func teamView(team: Match.Team?) -> some View {
+        VStack(spacing: 4) {
+            AsyncImage(url: URL(string: team?.imageUrl ?? "")) { image in
+                image.resizable()
+            } placeholder: {
+                Circle().fill(Color.gray)
+            }
+            .frame(width: 60, height: 60)
+            .clipShape(Circle())
+
+            Text(team?.name ?? "-")
+                .font(.caption)
+                .foregroundColor(.white)
+                .lineLimit(1)
+        }.frame(maxWidth: .infinity, alignment: .center)
     }
 }
 
+#Preview {
+    let oponentes: [Match.Opponent] = [
+        Match.Opponent(opponent: Match.Team(name: "Teste nome 1", imageUrl: "")),
+        Match.Opponent(opponent: Match.Team(name: "Teste nome 2", imageUrl: ""))
+    ]
 
+    let match = Match(id: 1,
+                      oponentes: oponentes,
+                      league: Match.League(name: "teste", imageUrl: "link_foto"),
+                      serie: Match.Serie(fullName: "teste Serie n"),
+                      status: "",
+                      beginAt: Date()
+    )
+
+    MatchRow(match: match)
+}

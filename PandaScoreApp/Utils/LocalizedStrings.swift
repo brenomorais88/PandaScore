@@ -13,6 +13,7 @@ enum LocalizedStrings {
         static let team2Placeholder = "Time 2"
         static let versus = "vs"
         static let now = "AGORA"
+        static let running = "running"
     }
 
     enum MatchList {
