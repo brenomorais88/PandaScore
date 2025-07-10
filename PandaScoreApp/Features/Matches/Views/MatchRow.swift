@@ -70,11 +70,7 @@ struct MatchRow: View {
             background = AppColors.liveRed
 
         } else if let beginAt = match.beginAt {
-            if beginAt.isToday {
-                text = beginAt.formattedHourLabel()
-            } else {
-                text = beginAt.formattedScheduleLabel()
-            }
+            text = beginAt.formattedDateLabel()
             background = AppColors.todayGray.opacity(0.2)
 
         } else {
@@ -123,8 +119,8 @@ struct MatchRow: View {
                       oponentes: oponentes,
                       league: Match.League(name: "teste", imageUrl: "link_foto"),
                       serie: Match.Serie(fullName: "teste Serie n"),
-                      status: "",
-                      beginAt: Date()
+                      status: "runn",
+                      beginAt: Date().advanced(by: 993600)
     )
 
     MatchRow(match: match)

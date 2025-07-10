@@ -36,7 +36,7 @@ struct Match: Decodable, Identifiable {
 
     struct Serie: Decodable {
         let fullName: String?
-        
+
         enum CodingKeys: String, CodingKey {
             case fullName = "full_name"
         }
@@ -66,7 +66,7 @@ struct Match: Decodable, Identifiable {
             self.beginAt = nil
         }
     }
-
+    
     init(id: Int, oponentes: [Opponent], league: League, serie: Serie, status: String, beginAt: Date?) {
         self.id = id
         self.opponents = oponentes
