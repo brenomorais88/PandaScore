@@ -16,7 +16,7 @@ class MatchService: MatchServiceProtocol {
     private let baseURL = APIConfig.baseURL
     private let apiKey = APIConfig.apiKey
     private let itemsPerPage = 20
-    private let hoursAhead = 24
+    private let hoursAhead = 72
 
     // MARK: - Init
 
@@ -31,18 +31,14 @@ class MatchService: MatchServiceProtocol {
     // MARK: - Public Methods
     func fetchUpcomingMatches(page: Int) -> AnyPublisher<[Match], Error> {
         guard let url = buildURL(forPage: page) else {
-            print("❌ [MatchService] URL inválida.")
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
-
-        print("🌐 [MatchService] Fetching from URL: \(url.absoluteString)")
         let request = URLRequest(url: url)
 
         return session.dataTaskPublisher(for: request)
             .tryMap { result -> Data in
                 if let httpResponse = result.response as? HTTPURLResponse,
                    !(200...299).contains(httpResponse.statusCode) {
-                    print("❌ [MatchService] Erro HTTP: \(httpResponse.statusCode)")
                     throw URLError(.badServerResponse)
                 }
                 return result.data
@@ -52,15 +48,10 @@ class MatchService: MatchServiceProtocol {
                 switch completion {
                 case .failure(let error):
                     if let decodingError = error as? DecodingError {
-                        print("❌ [MatchService] Erro de parsing:")
                         debugPrint(decodingError)
-                    } else if let urlError = error as? URLError {
-                        print("❌ [MatchService] Erro de rede: \(urlError)")
-                    } else {
-                        print("❌ [MatchService] Outro erro: \(error)")
                     }
                 case .finished:
-                    print("✅ [MatchService] Partidas carregadas com sucesso.")
+                    print("[MatchService] Partidas carregadas com sucesso.")
                 }
             })
             .receive(on: RunLoop.main)
@@ -71,13 +62,15 @@ class MatchService: MatchServiceProtocol {
     // MARK: - Private Helpers
 
     private func buildURL(forPage page: Int) -> URL? {
-        let now = Date()
-        guard let futureDate = Calendar.current.date(byAdding: .hour, value: hoursAhead, to: now) else {
+        guard let startDate = Calendar.current.date(byAdding: .hour, value: -2, to: Date()),
+              let futureDate = Calendar.current.date(byAdding: .hour, value: hoursAhead, to: Date()) else {
             return nil
         }
         
         let formatter = ISO8601DateFormatter()
-        let fromString = formatter.string(from: now)
+        formatter.timeZone = TimeZone.current
+
+        let fromString = formatter.string(from: startDate)
         let toString = formatter.string(from: futureDate)
 
         var components = URLComponents(string: baseURL)
