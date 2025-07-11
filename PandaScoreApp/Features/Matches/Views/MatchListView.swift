@@ -15,26 +15,31 @@ struct MatchListView: View {
     }
 
     var body: some View {
-        NavigationView {
-            Group {
-                if viewModel.matches.isEmpty && !viewModel.isLoading {
-                    Text(LocalizedStrings.MatchList.emptyData)
-                        .foregroundColor(.gray)
-                        .multilineTextAlignment(.center)
-                        .padding()
+        Group {
+            if viewModel.matches.isEmpty {
+                if !viewModel.isLoading {
+                    emptyData
                 } else {
-                    matchList
+                    loadingFullScreenIndicator
                 }
-            }
-            .navigationTitle(LocalizedStrings.MatchList.title)
-            .foregroundStyle(.white)
-            .background(AppColors.background.ignoresSafeArea())
-            .toolbarBackground(AppColors.background, for: .navigationBar)
-            .onAppear {
-                viewModel.fetchMatches()
+            } else {
+                matchList
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text(LocalizedStrings.MatchList.title)
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.top, 16)
+                    .padding(.bottom, 16)
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .background(AppColors.background.ignoresSafeArea())
+        .onAppear {
+            viewModel.fetchMatches()
+        }
     }
 
     private var matchList: some View {
@@ -53,9 +58,32 @@ struct MatchListView: View {
                     loadingIndicator
                 }
             }
+            .padding(.top)
         }
         .refreshable {
             viewModel.refresh()
+        }
+    }
+
+    private var emptyData: some View {
+        ZStack {
+            AppColors.background
+                .ignoresSafeArea()
+            Text(LocalizedStrings.MatchList.emptyData)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+    }
+
+    private var loadingFullScreenIndicator: some View {
+        ZStack {
+            AppColors.background
+                .ignoresSafeArea()
+            ProgressView()
+                .scaleEffect(2)
+                .progressViewStyle(CircularProgressViewStyle())
+                .tint(.white)
         }
     }
 
@@ -64,6 +92,8 @@ struct MatchListView: View {
             Spacer()
             ProgressView(LocalizedStrings.MatchList.loading)
                 .padding()
+                .foregroundColor(.white)
+                .tint(.white)
             Spacer()
         }
     }

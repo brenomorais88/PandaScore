@@ -15,9 +15,25 @@ struct PandaScoreApp: App {
         MatchListViewModel(service: matchService)
     }
 
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor(named: "BackgroundColor") ?? .black
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 34, weight: .bold)
+        ]
+        appearance.shadowColor = .clear
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+
     var body: some Scene {
         WindowGroup {
-            MatchListView(viewModel: matchListViewModel)
+            NavigationStack {
+                MatchListView(viewModel: matchListViewModel)
+            }
         }
     }
 }
