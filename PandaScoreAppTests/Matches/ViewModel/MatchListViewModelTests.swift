@@ -29,7 +29,6 @@ final class MatchListViewModelTests: XCTestCase {
     }
 
     func test_fetchMatches_success_should_append_matches() {
-        // Given
         let matches = [Match.mock(id: 1), Match.mock(id: 2)]
         mockService.fetchResult = .success(matches)
 
@@ -43,10 +42,8 @@ final class MatchListViewModelTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        // When
         viewModel.fetchMatches()
 
-        // Then
         wait(for: [expectation], timeout: 1)
     }
 
