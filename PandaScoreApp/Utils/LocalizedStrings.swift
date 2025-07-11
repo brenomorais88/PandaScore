@@ -22,6 +22,11 @@ enum LocalizedStrings {
         static let emptyData = "Nenhuma partida encontrada."
     }
 
+    enum MatchDetail {
+        static let tryAgain = "Tentar Novamente"
+        static let errorMessage = "Ops, algo deu errado"
+    }
+
     enum DateLabel {
         static let today = "Hoje"
         static let tomorrow = "Amanhã"

@@ -18,11 +18,11 @@ public struct MatchDetail: Decodable {
 
     // sub-models inline ou em arquivos separados
     public struct League: Decodable {
-
+        public let name: String
     }
 
     public struct Serie: Decodable {
-
+        public let name: String
     }
 
     public struct Opponent: Decodable {

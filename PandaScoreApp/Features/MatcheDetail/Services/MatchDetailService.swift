@@ -37,9 +37,25 @@ public final class MatchDetailService: MatchDetailServiceProtocol {
 
         return URLSession.shared
             .dataTaskPublisher(for: request)
-            .map(\.data)
+            .tryMap { result -> Data in
+                if let httpResponse = result.response as? HTTPURLResponse,
+                   !(200...299).contains(httpResponse.statusCode) {
+                    throw URLError(.badServerResponse)
+                }
+                return result.data
+            }
             .decode(type: MatchDetail.self, decoder: decoder)
             .receive(on: DispatchQueue.main)
+            .handleEvents(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    if let decodingError = error as? DecodingError {
+                        debugPrint(decodingError)
+                    }
+                case .finished:
+                    print("[MatchDetailService] Detalhe da Partida carregadas com sucesso.")
+                }
+            })
             .eraseToAnyPublisher()
     }
 

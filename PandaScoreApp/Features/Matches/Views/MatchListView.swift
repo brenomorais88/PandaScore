@@ -15,16 +15,21 @@ struct MatchListView: View {
     }
 
     var body: some View {
-        Group {
-            if viewModel.matches.isEmpty {
-                if !viewModel.isLoading {
-                    emptyData
+        NavigationStack{
+            Group {
+                if viewModel.matches.isEmpty {
+                    if !viewModel.isLoading {
+                        emptyData
+                    } else {
+                        loadingFullScreenIndicator
+                    }
                 } else {
-                    loadingFullScreenIndicator
+                    matchList
                 }
-            } else {
-                matchList
             }
+        }
+        .navigationDestination(for: Int.self) { matchId in
+            detailView(for: matchId)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -40,18 +45,22 @@ struct MatchListView: View {
         .onAppear {
             viewModel.fetchMatches()
         }
+
+
     }
 
     private var matchList: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.matches) { match in
-                    MatchRow(match: match)
-                        .onAppear {
-                            if match.id == viewModel.matches.last?.id {
-                                viewModel.fetchMatches()
-                            }
+                    NavigationLink(value: match.id) {
+                        MatchRow(match: match)
+                    }
+                    .onAppear {
+                        if match.id == viewModel.matches.last?.id {
+                            viewModel.fetchMatches()
                         }
+                    }
                 }
 
                 if viewModel.isLoading {
@@ -96,5 +105,22 @@ struct MatchListView: View {
                 .tint(.white)
             Spacer()
         }
+    }
+
+    private var detailView: some View {
+        HStack {
+            Spacer()
+            ProgressView(LocalizedStrings.MatchList.loading)
+                .padding()
+                .foregroundColor(.white)
+                .tint(.white)
+            Spacer()
+        }
+    }
+
+    private func detailView(for matchId: Int) -> some View {
+        let service = MatchDetailService()
+        let vm = MatchDetailViewModel(service: service, detailId: matchId)
+        return MatchDetailView(viewModel: vm)
     }
 }
