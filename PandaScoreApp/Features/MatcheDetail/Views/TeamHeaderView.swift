@@ -14,9 +14,11 @@ struct TeamHeaderView: View {
         VStack(spacing: 12) {
             HStack(spacing: 48) {
                 TeamLogoView(team: viewData.team1)
+
                 Text(LocalizedStrings.TeamHeaderView.versus)
                     .font(.headline)
                     .foregroundColor(.white)
+
                 TeamLogoView(team: viewData.team2)
             }
 
@@ -43,12 +45,14 @@ struct TeamLogoView: View {
                             .scaledToFill()
                     } else {
                         PlaceholderTeamView()
+                        .frame(width: 64, height: 64)
                     }
                 }
                 .frame(width: 64, height: 64)
                 .clipShape(Circle())
             } else {
                 PlaceholderTeamView()
+                .frame(width: 64, height: 64)
             }
 
             Text(team?.name ?? "-")

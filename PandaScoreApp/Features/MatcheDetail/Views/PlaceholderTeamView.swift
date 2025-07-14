@@ -12,5 +12,6 @@ struct PlaceholderTeamView: View {
         Image("placeholder-team")
             .resizable()
             .scaledToFill()
+            .clipShape(Circle())
     }
 }
