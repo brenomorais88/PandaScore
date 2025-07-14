@@ -23,7 +23,5 @@ public struct MatchDetail {
             case lastName  = "last_name"
             case imageUrl  = "image_url"
         }
-
-        public var nickname: String { name }
     }
 }

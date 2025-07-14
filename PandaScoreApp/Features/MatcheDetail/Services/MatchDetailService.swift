@@ -32,6 +32,8 @@ public final class MatchDetailService: MatchDetailServiceProtocol {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
 
+        print(url)
+
         let request = URLRequest(url: url)
         return session
             .dataTaskPublisher(for: request)

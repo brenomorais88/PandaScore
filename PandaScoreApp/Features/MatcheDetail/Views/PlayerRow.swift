@@ -34,12 +34,14 @@ private struct PlayerCellLeft: View {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 4) {
-                Text(player?.nickname ?? "-")
+                Text(player?.name ?? "-")
                     .font(.headline)
                     .foregroundColor(.white)
-                Text(player?.name ?? "-")
+                    .lineLimit(1)
+                Text(player?.firstName ?? "-")
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                    .lineLimit(1)
             }
 
             AsyncImage(url: player?.imageUrl) { phase in
@@ -81,12 +83,14 @@ private struct PlayerCellRight: View {
             .clipShape(RoundedRectangle(cornerRadius: 6))
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(player?.nickname ?? "-")
+                Text(player?.name ?? "-")
                     .font(.headline)
                     .foregroundColor(.white)
-                Text(player?.name ?? "-")
+                    .lineLimit(1)
+                Text(player?.firstName ?? "-")
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                    .lineLimit(1)
             }
 
             Spacer()
