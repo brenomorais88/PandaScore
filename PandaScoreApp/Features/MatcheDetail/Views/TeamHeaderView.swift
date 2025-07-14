@@ -29,7 +29,7 @@ struct TeamHeaderView: View {
     }
 }
 
-private struct TeamLogoView: View {
+struct TeamLogoView: View {
     let team: Match.Team?
 
     var body: some View {

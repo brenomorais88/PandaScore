@@ -61,12 +61,18 @@ final class MatchListViewTests: XCTestCase {
         vm.matches = [sample]
         vm.isLoading = false
 
-        let view = MatchListView(viewModel: vm)
-        let scroll = try view.inspect().find(ViewType.ScrollView.self)
+        let sut = MatchListView(viewModel: vm)
+        ViewHosting.host(view: sut)
 
-        let forEach = try scroll.lazyVStack().find(ViewType.ForEach.self)
+        let scroll = try sut.inspect().find(ViewType.ScrollView.self)
+        let lazy = try scroll.lazyVStack()
+        let forEach = try lazy.find(ViewType.ForEach.self)
+        let navLink = try forEach.navigationLink(0)
+        let row = try navLink.labelView().view(MatchRow.self)
+        XCTAssertNoThrow(row)
 
-        XCTAssertNoThrow( try forEach.view(MatchRow.self, 0) )
+        let actualRow: MatchRow = try row.actualView()
+        XCTAssertEqual(actualRow.match.id, sample.id)
     }
 
     func test_withMatches_andIsLoadingTrue_showsBottomLoadingIndicator() throws {
@@ -93,24 +99,34 @@ final class MatchListViewTests: XCTestCase {
 
     func test_onAppear_callsFetchMatches() throws {
         let vm = SpyMatchListViewModel()
-        let view = MatchListView(viewModel: vm)
-
-        try view.inspect().group().callOnAppear()
+        let sut = MatchListView(viewModel: vm)
+        ViewHosting.host(view: sut)
+        let nav = try sut.inspect().navigationStack()
+        try nav.callOnAppear()
         XCTAssertTrue(vm.fetchCalled)
     }
 
     // MARK: - Pagination (last row onAppear)
-
+    
     func test_onLastRowAppear_triggersFetchMatchesAgain() throws {
         let sample1 = Match.mock(id: 1)
         let sample2 = Match.mock(id: 2)
-        let vm = SpyMatchListViewModel()
-        vm.matches = [sample1, sample2]
+        let vm      = SpyMatchListViewModel()
+        vm.matches  = [sample1, sample2]
+        vm.isLoading = false
 
-        let view = MatchListView(viewModel: vm)
-        let rows = try view.inspect().findAll(MatchRow.self)
-        let lastRow = rows.last!
-        try lastRow.callOnAppear()
+        let sut = MatchListView(viewModel: vm)
+        ViewHosting.host(view: sut)
+
+        let scroll     = try sut.inspect().find(ViewType.ScrollView.self)
+        let lazyVStack = try scroll.lazyVStack()
+        let forEach    = try lazyVStack.find(ViewType.ForEach.self)
+
+        let links = forEach.findAll(ViewType.NavigationLink.self)
+        XCTAssertEqual(links.count, 2)
+
+        let lastLink = links.last!
+        try lastLink.callOnAppear()
         XCTAssertTrue(vm.fetchCalled)
     }
 }
