@@ -64,48 +64,4 @@ struct MatchDetailView: View {
                 .tint(.white)
         }
     }
-
-    private func errorScreen(error: Error) -> some View {
-        ZStack {
-            AppColors.background
-                .ignoresSafeArea()
-
-            VStack(spacing: 24) {
-                Image(systemName: "wifi.exclamationmark")
-                    .font(.system(size: 48))
-                    .foregroundColor(.yellow)
-
-                Text(LocalizedStrings.MatchDetail.errorMessage)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-
-                Text(error.localizedDescription)
-                    .font(.body)
-                    .foregroundColor(.white.opacity(0.8))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-
-                Button(action: {
-                    viewModel.loadDetail()
-                }) {
-                    Text(LocalizedStrings.MatchDetail.tryAgain)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(Color.white)
-                        .foregroundColor(AppColors.background)
-                        .cornerRadius(12)
-                }
-                .padding(.horizontal, 32)
-            }
-            .padding(.vertical, 32)
-            .padding(.horizontal, 16)
-            .background(Color.black.opacity(0.5))
-            .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 5)
-            .padding(32)
-        }
-    }
-
 }

@@ -5,8 +5,6 @@
 //  Created by Breno Morais on 11/07/25.
 //
 
-// MatchListViewTests.swift
-
 import XCTest
 import SwiftUI
 import ViewInspector

@@ -8,8 +8,8 @@
 import Combine
 import Foundation
 
-public final class MatchDetailViewModel: ObservableObject {
-    @Published public private(set) var isLoading = false
+public class MatchDetailViewModel: ObservableObject {
+    @Published public var isLoading = false
     @Published public private(set) var error: Error?
 
     var t1players: [MatchDetail.Player]?
