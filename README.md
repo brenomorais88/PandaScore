@@ -1,86 +1,84 @@
 # PandaScoreApp
 
-**PandaScoreApp** é um aplicativo iOS que exibe partidas de CS\:GO acontecendo em diversos torneios ao redor do mundo, consumindo dados da PandaScore API.
+**PandaScoreApp** is an iOS application that displays CS\:GO matches happening across various tournaments worldwide, using the PandaScore API.
 
 ---
 
-## Visão Geral
+## Overview
 
-* Tela de splash exibindo o logo ao iniciar o app.
-* Tela principal (Matches List) com a lista de partidas a partir da data atual:
+* **Splash Screen**: displays the app logo on launch.
+* **Main Screen (Matches List)**: shows upcoming and ongoing matches from the current date:
 
-  * Partidas Scheduled, In Progress e Ended.
-  * Ordenação: partidas em andamento no topo.
-  * Pull-to-refresh e paginação (20 itens por página).
-* Tela de detalhes (Match Detail) mostrando:
+  * Match statuses: Scheduled, In Progress, Ended
+  * Sorting: matches in progress appear at the top
+  * Pull-to-refresh and pagination (20 items per page)
+* **Match Detail Screen**: shows additional information for a selected match:
 
-  * Nome das equipes (Team 1 x Team 2).
-  * Data e hora local da partida.
-  * Lista de jogadores de cada time (nome, nickname e foto).
+  * Team names (Team 1 vs. Team 2)
+  * Local date and time of the match
+  * Player list for each team (name, nickname, and photo)
 
-## Tecnologias e Arquitetura
+## Technologies & Architecture
 
-* Linguagem: Swift
-* Framework UI: SwiftUI
-* Arquitetura: MVVM
-* Reatividade: Combine
-* Testes: XCTest (unit tests)
+* **Language**: Swift
+* **UI Framework**: SwiftUI
+* **Architecture Pattern**: MVVM
+* **Reactive Framework**: Combine
+* **Testing**: XCTest (unit tests)
 
-## Requisitos
+## Requirements
 
-* Xcode 14.0 ou superior
-* iOS 15.0 ou superior
-* Swift 5.6 ou superior
-* Conexão com internet para consumir a PandaScore API
+* Xcode 14.0 or later
+* iOS 15.0 or later
+* Swift 5.6 or later
+* Internet connection to fetch data from the PandaScore API
 
-## Instalação
+## Installation
 
-1. Clone este repositório:
+1. Clone the repository:
 
    ```bash
-   git clone https://github.com/seu-usuario/PandaScoreApp.git
+   git clone https://github.com/your-username/PandaScoreApp.git
    ```
-2. Abra o projeto no Xcode:
+2. Open the project in Xcode:
 
    ```bash
    cd PandaScoreApp
    open PandaScoreApp.xcodeproj
    ```
-3. Instale as dependências via Swift Package Manager.
-4. Adicione sua API Key da PandaScore em `Constants.swift`:
+3. Install dependencies via Swift Package Manager.
+4. Add your PandaScore API key in `Constants.swift`:
 
    ```swift
    struct Api {
-       static let key = "SEU_TOKEN_AQUI"
+       static let key = "YOUR_API_TOKEN"
    }
    ```
 
-## Como Executar
+## Running the App
 
-1. Selecione o simulador ou dispositivo físico.
-2. Pressione ⌘R para compilar e rodar o app.
-3. Na primeira execução, a Splash Screen será exibida antes de carregar a lista de partidas.
+1. Select a simulator or physical device.
+2. Press **⌘R** to build and run the app.
+3. On first launch, the splash screen appears before loading the matches list.
 
-## Arquitetura MVVM
+## MVVM Architecture
 
-1. View: SwiftUI, consome dados do ViewModel.
-2. ViewModel: orquestra chamadas de rede via Services e expõe estados reativos.
-3. Service: implementação do protocolo para requisições HTTP usando URLSession e Combine.
-4. Model: estruturas que representam JSON da PandaScore API.
+1. **View**: SwiftUI views that observe and render state from the ViewModel.
+2. **ViewModel**: orchestrates network calls via Services and exposes reactive properties.
+3. **Service**: protocols and implementations for HTTP requests using URLSession and Combine.
+4. **Model**: data structures mapping JSON from the PandaScore API.
 
 ## PandaScore API
 
-* Documentação geral: [https://developers.pandascore.co/docs/introduction](https://developers.pandascore.co/docs/introduction)
-* Autenticação: [https://developers.pandascore.co/docs/authentication](https://developers.pandascore.co/docs/authentication)
-* Endpoint CS\:GO: `/csgo/matches`, `/csgo/matches/{id}/players`
+* General documentation: [https://developers.pandascore.co/docs/introduction](https://developers.pandascore.co/docs/introduction)
+* Authentication: [https://developers.pandascore.co/docs/authentication](https://developers.pandascore.co/docs/authentication)
+* CS\:GO endpoints: `/csgo/matches`, `/csgo/matches/{id}/players`
 
-## Testes
+## Tests
 
-* Execute todos os testes unitários no Xcode via ⌘U.
-* Cobertura de testes para validação de ViewModels e Services.
+* Run all unit tests in Xcode with **⌘U**.
+* Coverage includes ViewModels and Services.
 
 ## Design
 
-Layout e especificações visuais seguem o design spec fornecido.
-
----
+UI layouts and visual specifications follow the provided design guidelines.
