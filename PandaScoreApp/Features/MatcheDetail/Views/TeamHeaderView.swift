@@ -42,17 +42,13 @@ private struct TeamLogoView: View {
                             .resizable()
                             .scaledToFill()
                     } else {
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 64, height: 64)
+                        PlaceholderTeamView()
                     }
                 }
                 .frame(width: 64, height: 64)
                 .clipShape(Circle())
             } else {
-                Circle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 64, height: 64)
+                PlaceholderTeamView()
             }
 
             Text(team?.name ?? "-")

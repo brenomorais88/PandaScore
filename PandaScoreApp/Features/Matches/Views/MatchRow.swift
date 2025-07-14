@@ -96,7 +96,7 @@ struct MatchRow: View {
             AsyncImage(url: URL(string: team?.imageUrl ?? "")) { image in
                 image.resizable()
             } placeholder: {
-                Circle().fill(Color.gray)
+                PlaceholderTeamView()
             }
             .frame(width: 60, height: 60)
             .clipShape(Circle())

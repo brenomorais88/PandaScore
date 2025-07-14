@@ -50,8 +50,7 @@ private struct PlayerCellLeft: View {
                         .resizable()
                         .scaledToFill()
                 } else {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.gray.opacity(0.3))
+                    PlaceholderPlayerView()
                 }
             }
             .frame(width: 52, height: 52)
@@ -74,8 +73,7 @@ private struct PlayerCellRight: View {
                         .resizable()
                         .scaledToFill()
                 } else {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.gray.opacity(0.3))
+                    PlaceholderPlayerView()
                 }
             }
             .frame(width: 52, height: 52)
