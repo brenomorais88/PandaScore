@@ -13,7 +13,7 @@ class MatchService: MatchServiceProtocol {
     // MARK: - Constants
     private let session: URLSession
     private let decoder: JSONDecoder
-    private let baseURL = APIConfig.baseURL
+    private let baseMatchesURL = APIConfig.baseURL + "csgo/matches"
     private let apiKey = APIConfig.apiKey
     private let itemsPerPage = 20
     private let hoursAhead = 72
@@ -73,7 +73,7 @@ class MatchService: MatchServiceProtocol {
         let fromString = formatter.string(from: startDate)
         let toString = formatter.string(from: futureDate)
 
-        var components = URLComponents(string: baseURL)
+        var components = URLComponents(string: baseMatchesURL)
         components?.queryItems = [
             URLQueryItem(name: "range[begin_at]", value: "\(fromString),\(toString)"),
             URLQueryItem(name: "per_page", value: "\(itemsPerPage)"),

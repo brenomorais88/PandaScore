@@ -65,4 +65,16 @@ class MatchListViewModel: MatchListViewModelProtocol {
     func refresh() {
         fetchMatches(reset: true)
     }
+
+    func createDetailViewDataForMatch(id: Int) -> MatchDetailViewData {
+        let matche = matches.first(where: { $0.id == id })
+        let team1: Match.Team? = matche?.team1
+        let team2: Match.Team? = matche?.team1
+        let beginAt: Date = matche?.beginAt ?? Date()
+        let leagueName: String = matche?.league.name ?? ""
+        let serieName: String = matche?.league.name ?? ""
+
+        let viewTitle: String = "\(leagueName) + \(serieName)"
+        return MatchDetailViewData(team1: team1, team2: team2, beginAt: beginAt, viewTitle: viewTitle)
+    }
 }

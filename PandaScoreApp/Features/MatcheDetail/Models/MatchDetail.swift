@@ -7,43 +7,24 @@
 
 import Foundation
 
-public struct MatchDetail: Decodable {
-    public let id: Int
-    public let beginAt: Date
-    public let league: League
-    public let serie: Serie
-    public let opponents: [Opponent]
-    public let rosters: [Roster]
-    // …outros campos que precisar
+public struct MatchDetail {
 
-    // sub-models inline ou em arquivos separados
-    public struct League: Decodable {
-        public let name: String
-    }
-
-    public struct Serie: Decodable {
-        public let name: String
-    }
-
-    public struct Opponent: Decodable {
-        public let opponent: Team
-    }
-
-    public struct Team: Decodable {
+    public struct Player: Identifiable, Decodable {
         public let id: Int
         public let name: String
+        public let firstName: String?
+        public let lastName: String?
         public let imageUrl: URL?
-    }
 
-    public struct Roster: Decodable {
-        public let teamId: Int
-        public let players: [Player]
-    }
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case firstName = "first_name"
+            case lastName  = "last_name"
+            case imageUrl  = "image_url"
+        }
 
-    public struct Player: Decodable {
-        public let id: Int
-        public let name: String
-        public let nickname: String
-        public let imageUrl: URL?
+        // Se você ainda quiser usar um nickname em tela, pode derivar:
+        public var nickname: String { name }
     }
 }

@@ -111,8 +111,8 @@ struct MatchRow: View {
 
 #Preview {
     let oponentes: [Match.Opponent] = [
-        Match.Opponent(opponent: Match.Team(name: "Teste nome 1", imageUrl: "")),
-        Match.Opponent(opponent: Match.Team(name: "Teste nome 2", imageUrl: ""))
+        Match.Opponent(opponent: Match.Team(id: 1, name: "Teste nome 1", imageUrl: "")),
+        Match.Opponent(opponent: Match.Team(id: 2, name: "Teste nome 2", imageUrl: ""))
     ]
 
     let match = Match(id: 1,

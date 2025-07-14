@@ -8,5 +8,5 @@
 import Combine
 
 public protocol MatchDetailServiceProtocol {
-    func fetchMatchDetail(id: Int) -> AnyPublisher<MatchDetail, Error>
+    func fetchPlayers(teamId: Int) -> AnyPublisher<[MatchDetail.Player], Error>
 }

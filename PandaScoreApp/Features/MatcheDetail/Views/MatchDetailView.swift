@@ -19,40 +19,36 @@ struct MatchDetailView: View {
             if viewModel.isLoading {
                 loadingFullScreenIndicator
 
-            } else if let match = viewModel.match {
+            } else {
                 ScrollView {
                     VStack(spacing: 24) {
                         TeamHeaderView(
-                            left: match.opponents[0].opponent,
-                            right: match.opponents[1].opponent,
-                            date: match.beginAt
+                            viewData: self.viewModel.viewData
                         )
 
-                        VStack(spacing: 12) {
-                            let team1Id = match.opponents[0].opponent.id
-                            let team2Id = match.opponents[1].opponent.id
-                            let team1Players = match.rosters.first { $0.teamId == team1Id }?.players ?? []
-                            let team2Players = match.rosters.first { $0.teamId == team2Id }?.players ?? []
-                            let maxCount = max(team1Players.count, team2Players.count)
-
-                            ForEach(0..<maxCount, id: \.self) { idx in
-                                PlayerRow(
-                                    left: idx < team1Players.count ? team1Players[idx] : nil,
-                                    right: idx < team2Players.count ? team2Players[idx] : nil
-                                )
-                            }
-                        }
-                        .padding(.horizontal)
+//                        VStack(spacing: 12) {
+//                            let team1Id = match.opponents[0].opponent.id
+//                            let team2Id = match.opponents[1].opponent.id
+//                            let team1Players = match.rosters.first { $0.teamId == team1Id }?.players ?? []
+//                            let team2Players = match.rosters.first { $0.teamId == team2Id }?.players ?? []
+//                            let maxCount = max(team1Players.count, team2Players.count)
+//
+//                            ForEach(0..<maxCount, id: \.self) { idx in
+//                                PlayerRow(
+//                                    left: idx < team1Players.count ? team1Players[idx] : nil,
+//                                    right: idx < team2Players.count ? team2Players[idx] : nil
+//                                )
+//                            }
+//                        }
+//                        .padding(.horizontal)
                     }
                     .padding(.top)
                 }
                 .background(AppColors.background.ignoresSafeArea())
 
-            } else if let error = viewModel.error {
-                errorScreen(error: error)
             }
         }
-        .navigationTitle(viewModel.match.map { "\($0.league.name) + \($0.serie.name)" } ?? "")
+        .navigationTitle(viewModel.viewData.viewTitle)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             viewModel.loadDetail()
@@ -82,7 +78,6 @@ struct MatchDetailView: View {
                     .font(.system(size: 48))
                     .foregroundColor(.yellow)
 
-                // Título
                 Text(LocalizedStrings.MatchDetail.errorMessage)
                     .font(.title2)
                     .fontWeight(.semibold)

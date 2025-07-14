@@ -120,7 +120,8 @@ struct MatchListView: View {
 
     private func detailView(for matchId: Int) -> some View {
         let service = MatchDetailService()
-        let vm = MatchDetailViewModel(service: service, detailId: matchId)
+        let viewData = viewModel.createDetailViewDataForMatch(id: matchId)
+        let vm = MatchDetailViewModel(service: service, viewData: viewData)
         return MatchDetailView(viewModel: vm)
     }
 }

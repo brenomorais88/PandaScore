@@ -20,11 +20,12 @@ struct Match: Decodable, Identifiable {
     }
 
     struct Team: Decodable {
+        let id: Int
         let name: String
         let imageUrl: String?
 
         enum CodingKeys: String, CodingKey {
-            case name
+            case name, id
             case imageUrl = "image_url"
         }
     }
