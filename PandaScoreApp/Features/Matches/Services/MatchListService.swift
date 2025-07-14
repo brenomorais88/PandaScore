@@ -44,6 +44,20 @@ class MatchService: MatchServiceProtocol {
                 return result.data
             }
             .decode(type: [Match].self, decoder: decoder)
+            .map { matches in
+                let running = matches.filter { $0.status == "running" }
+                let others = matches
+                    .filter { $0.status != "running" }
+                    .sorted { lhs, rhs in
+                        switch (lhs.beginAt, rhs.beginAt) {
+                        case let (l?, r?):      return l < r
+                        case (nil, _?):         return false
+                        case (_?, nil):         return true
+                        default:                return false
+                        }
+                    }
+                return running + others
+            }
             .handleEvents(receiveCompletion: { completion in
                 switch completion {
                 case .failure(let error):
@@ -66,7 +80,7 @@ class MatchService: MatchServiceProtocol {
               let futureDate = Calendar.current.date(byAdding: .hour, value: hoursAhead, to: Date()) else {
             return nil
         }
-        
+
         let formatter = ISO8601DateFormatter()
         formatter.timeZone = TimeZone.current
 
