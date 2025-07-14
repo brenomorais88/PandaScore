@@ -69,7 +69,7 @@ class MatchListViewModel: MatchListViewModelProtocol {
     func createDetailViewDataForMatch(id: Int) -> MatchDetailViewData {
         let matche = matches.first(where: { $0.id == id })
         let team1: Match.Team? = matche?.team1
-        let team2: Match.Team? = matche?.team1
+        let team2: Match.Team? = matche?.team2
         let beginAt: Date = matche?.beginAt ?? Date()
         let leagueName: String = matche?.league.name ?? ""
         let serieName: String = matche?.league.name ?? ""

@@ -26,21 +26,19 @@ struct MatchDetailView: View {
                             viewData: self.viewModel.viewData
                         )
 
-//                        VStack(spacing: 12) {
-//                            let team1Id = match.opponents[0].opponent.id
-//                            let team2Id = match.opponents[1].opponent.id
-//                            let team1Players = match.rosters.first { $0.teamId == team1Id }?.players ?? []
-//                            let team2Players = match.rosters.first { $0.teamId == team2Id }?.players ?? []
-//                            let maxCount = max(team1Players.count, team2Players.count)
-//
-//                            ForEach(0..<maxCount, id: \.self) { idx in
-//                                PlayerRow(
-//                                    left: idx < team1Players.count ? team1Players[idx] : nil,
-//                                    right: idx < team2Players.count ? team2Players[idx] : nil
-//                                )
-//                            }
-//                        }
-//                        .padding(.horizontal)
+                        VStack(spacing: 12) {
+                            let team1Players = self.viewModel.t1players ?? []
+                            let team2Players = self.viewModel.t2players ?? []
+                            let maxCount = max(team1Players.count, team2Players.count)
+
+                            ForEach(0..<maxCount, id: \.self) { idx in
+                                PlayerRow(
+                                    left: idx < team1Players.count ? team1Players[idx] : nil,
+                                    right: idx < team2Players.count ? team2Players[idx] : nil
+                                )
+                            }
+                        }
+                        .padding(.horizontal)
                     }
                     .padding(.top)
                 }
