@@ -47,6 +47,8 @@ struct PandaScoreApp: App {
             NavigationStack {
                 MatchListView(viewModel: matchListViewModel)
             }
+            .tint(.white)
+            .accentColor(.white)
         }
     }
 }
