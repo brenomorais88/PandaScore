@@ -9,7 +9,7 @@ import Foundation
 
 public struct MatchDetail {
 
-    public struct Player: Identifiable, Decodable {
+    public struct Player: Identifiable, Decodable, Equatable {
         public let id: Int
         public let name: String
         public let firstName: String?

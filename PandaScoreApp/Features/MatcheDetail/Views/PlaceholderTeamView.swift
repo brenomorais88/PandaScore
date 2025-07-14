@@ -12,6 +12,5 @@ struct PlaceholderTeamView: View {
         Image("placeholder-team")
             .resizable()
             .scaledToFill()
-            .frame(width: 52, height: 52)
     }
 }

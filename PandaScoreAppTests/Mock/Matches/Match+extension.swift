@@ -13,7 +13,7 @@ extension Match {
         Match(
             id: id,
             oponentes: [
-                Opponent(opponent: Team(name: "Team A", imageUrl: ""))
+                Opponent(opponent: Team(id: id, name: "Team A", imageUrl: ""))
             ],
             league: League(name: "Mock League", imageUrl: ""),
             serie: Serie(fullName: "Serie A"),

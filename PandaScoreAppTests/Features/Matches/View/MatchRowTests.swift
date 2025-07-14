@@ -108,8 +108,8 @@ final class MatchRowTests: XCTestCase {
         beginAt: Date? = nil
     ) -> Match {
 
-        let team1 = Match.Team(name: team1Name, imageUrl: "")
-        let team2 = Match.Team(name: team2Name, imageUrl: "")
+        let team1 = Match.Team(id: 1, name: team1Name, imageUrl: "")
+        let team2 = Match.Team(id: 2, name: team2Name, imageUrl: "")
         let opponents = [
             Match.Opponent(opponent: team1),
             Match.Opponent(opponent: team2)

@@ -122,4 +122,24 @@ final class MatchListViewModelTests: XCTestCase {
 
         XCTAssertEqual(mockService.callCount, 0)
     }
+
+    func test_detail_view_data_creation () {
+        let expectation = XCTestExpectation(description: "Shoud create view data")
+
+        let matches = [Match.mock(id: 1), Match.mock(id: 2)]
+
+        mockService.fetchResult = .success(matches)
+        viewModel.fetchMatches()
+
+        let viewData = viewModel.createDetailViewDataForMatch(id: viewModel.matches.first!.id)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(viewData.team1, matches.first!.team1)
+            XCTAssertEqual(viewData.team2, matches.first!.team2)
+            XCTAssertEqual(viewData.beginAt, matches.first!.beginAt)
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
+    }
 }

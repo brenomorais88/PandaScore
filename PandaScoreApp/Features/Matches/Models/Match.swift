@@ -19,7 +19,7 @@ struct Match: Decodable, Identifiable {
         let opponent: Team
     }
 
-    struct Team: Decodable {
+    struct Team: Decodable, Equatable {
         let id: Int
         let name: String
         let imageUrl: String?
