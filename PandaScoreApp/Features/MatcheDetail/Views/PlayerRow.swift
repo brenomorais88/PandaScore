@@ -12,46 +12,37 @@ struct PlayerRow: View {
     let right: MatchDetail.Player?
 
     var body: some View {
-        HStack(spacing: 16) {
-            if let p = left {
-                PlayerCell(player: p)
-            } else {
-                Spacer()
-            }
+        HStack() {
+            PlayerCellLeft(player: left)
 
             Spacer()
+                .frame(width: 24)
 
-            if let p = right {
-                PlayerCell(player: p)
-            } else {
-                Spacer()
-            }
+            PlayerCellRight(player: right)
         }
-        .padding(12)
-        .background(AppColors.card)
-        .clipShape(
-            RoundedCorner(radius: 10, corners: [.topLeft, .topRight, .bottomLeft, .bottomRight])
-        )
+        .background(Color.clear)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(height: 60)
     }
 }
 
-private struct PlayerCell: View {
-    let player: MatchDetail.Player
+private struct PlayerCellLeft: View {
+    let player: MatchDetail.Player?
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(player.nickname)
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(player?.nickname ?? "-")
                     .font(.headline)
                     .foregroundColor(.white)
-                Text(player.name)
+                Text(player?.name ?? "-")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }
 
-            Spacer()
-
-            AsyncImage(url: player.imageUrl) { phase in
+            AsyncImage(url: player?.imageUrl) { phase in
                 if let image = phase.image {
                     image
                         .resizable()
@@ -61,8 +52,46 @@ private struct PlayerCell: View {
                         .fill(Color.gray.opacity(0.3))
                 }
             }
-            .frame(width: 40, height: 40)
+            .frame(width: 52, height: 52)
+            .padding(8)
             .clipShape(RoundedRectangle(cornerRadius: 6))
         }
+        .background(AppColors.card)
+        .clipShape(RoundedCorner(radius: 8, corners: [.topRight, .bottomRight]))
+    }
+}
+
+private struct PlayerCellRight: View {
+    let player: MatchDetail.Player?
+
+    var body: some View {
+        HStack {
+            AsyncImage(url: player?.imageUrl) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(Color.gray.opacity(0.3))
+                }
+            }
+            .frame(width: 52, height: 52)
+            .padding(8)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(player?.nickname ?? "-")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                Text(player?.name ?? "-")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+
+            Spacer()
+        }
+        .background(AppColors.card)
+        .clipShape(RoundedCorner(radius: 8, corners: [.topLeft, .bottomLeft]))
     }
 }

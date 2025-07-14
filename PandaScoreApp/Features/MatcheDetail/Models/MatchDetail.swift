@@ -24,7 +24,6 @@ public struct MatchDetail {
             case imageUrl  = "image_url"
         }
 
-        // Se você ainda quiser usar um nickname em tela, pode derivar:
         public var nickname: String { name }
     }
 }

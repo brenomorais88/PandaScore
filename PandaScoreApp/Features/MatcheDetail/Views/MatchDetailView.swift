@@ -26,7 +26,7 @@ struct MatchDetailView: View {
                             viewData: self.viewModel.viewData
                         )
 
-                        VStack(spacing: 12) {
+                        VStack(spacing: 24) {
                             let team1Players = self.viewModel.t1players ?? []
                             let team2Players = self.viewModel.t2players ?? []
                             let maxCount = max(team1Players.count, team2Players.count)
@@ -38,7 +38,6 @@ struct MatchDetailView: View {
                                 )
                             }
                         }
-                        .padding(.horizontal)
                     }
                     .padding(.top)
                 }
