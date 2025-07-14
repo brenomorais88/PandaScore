@@ -46,7 +46,7 @@ struct MatchDetailView: View {
 
             }
         }
-        .navigationTitle(viewModel.viewData.viewTitle)
+        .navigationTitle(viewModel.viewData.viewTitle)        
         .navigationBarTitleDisplayMode(.inline)
         .onAppear() {
             viewModel.loadDetail()

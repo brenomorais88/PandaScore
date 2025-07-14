@@ -16,19 +16,32 @@ struct PandaScoreApp: App {
     }
 
     init() {
+        let rawBackImage = UIImage(named: "back_btn")
+        let backImage = rawBackImage?.withRenderingMode(.alwaysTemplate)
+
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor(named: "BackgroundColor") ?? .black
+        appearance.backgroundColor = UIColor.background
+        appearance.shadowColor = .clear
+        appearance.setBackIndicatorImage(backImage, transitionMaskImage: backImage)
+
+        let backButtonItem = appearance.backButtonAppearance
+        backButtonItem.normal.titlePositionAdjustment = UIOffset(horizontal: -1000, vertical: 0)
+        backButtonItem.highlighted.titlePositionAdjustment = UIOffset(horizontal: -1000, vertical: 0)
+
         appearance.titleTextAttributes = [
             .foregroundColor: UIColor.white,
-            .font: UIFont.systemFont(ofSize: 34, weight: .bold)
+            .font: UIFont.systemFont(ofSize: 18, weight: .bold)
         ]
-        appearance.shadowColor = .clear
 
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        let navBar = UINavigationBar.appearance()
+        navBar.standardAppearance = appearance
+        navBar.scrollEdgeAppearance = appearance
+        navBar.compactAppearance = appearance
+        navBar.compactScrollEdgeAppearance = appearance
+        navBar.tintColor = .white
     }
-
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack {

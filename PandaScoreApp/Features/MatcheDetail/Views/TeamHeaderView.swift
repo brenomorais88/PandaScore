@@ -14,24 +14,18 @@ struct TeamHeaderView: View {
         VStack(spacing: 12) {
             HStack(spacing: 48) {
                 TeamLogoView(team: viewData.team1)
-                Text("vs")
+                Text(LocalizedStrings.TeamHeaderView.versus)
                     .font(.headline)
                     .foregroundColor(.white)
                 TeamLogoView(team: viewData.team2)
             }
 
-            Text(dateLabel)
+            Text(viewData.beginAt.formattedDateLabel())
                 .font(.subheadline)
+                .fontWeight(.bold)
                 .foregroundColor(.white)
+                .padding(8)
         }
-    }
-
-    private var dateLabel: String {
-        let df = DateFormatter()
-        df.locale = .current
-        df.dateStyle = .short
-        df.timeStyle = .short
-        return df.string(from: self.viewData.beginAt)
     }
 }
 
@@ -40,18 +34,26 @@ private struct TeamLogoView: View {
 
     var body: some View {
         VStack(spacing: 6) {
-//            AsyncImage(url: team.imageUrl) { phase in
-//                if let image = phase.image {
-//                    image
-//                        .resizable()
-//                        .scaledToFill()
-//                } else {
-//                    Circle()
-//                        .fill(Color.gray.opacity(0.3))
-//                }
-//            }
-//            .frame(width: 64, height: 64)
-//            .clipShape(Circle())
+
+            if let imageUrl: URL = URL(string: team?.imageUrl ?? "") {
+                AsyncImage(url: imageUrl) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        Circle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 64, height: 64)
+                    }
+                }
+                .frame(width: 64, height: 64)
+                .clipShape(Circle())
+            } else {
+                Circle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(width: 64, height: 64)
+            }
 
             Text(team?.name ?? "-")
                 .font(.caption)

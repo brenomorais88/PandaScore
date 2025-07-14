@@ -31,4 +31,8 @@ enum LocalizedStrings {
         static let today = "Hoje"
         static let tomorrow = "Amanhã"
     }
+
+    enum TeamHeaderView {
+        static let versus = "vs"
+    }
 }

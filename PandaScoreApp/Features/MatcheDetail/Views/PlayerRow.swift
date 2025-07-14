@@ -28,7 +28,7 @@ struct PlayerRow: View {
             }
         }
         .padding(12)
-        .background(Color("RowBackground"))
+        .background(AppColors.card)
         .clipShape(
             RoundedCorner(radius: 10, corners: [.topLeft, .topRight, .bottomLeft, .bottomRight])
         )
