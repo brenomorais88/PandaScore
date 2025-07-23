@@ -76,7 +76,9 @@ class MatchService: MatchServiceProtocol {
     // MARK: - Private Helpers
 
     private func buildURL(forPage page: Int) -> URL? {
-        guard let startDate = Calendar.current.date(byAdding: .hour, value: -2, to: Date()),
+        // decrease 2 hours from current time to take the started matches
+        let hoursBeforeCurrentDate = -2
+        guard let startDate = Calendar.current.date(byAdding: .hour, value: hoursBeforeCurrentDate, to: Date()),
               let futureDate = Calendar.current.date(byAdding: .hour, value: hoursAhead, to: Date()) else {
             return nil
         }
