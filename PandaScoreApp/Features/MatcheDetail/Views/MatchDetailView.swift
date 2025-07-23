@@ -53,7 +53,6 @@ struct MatchDetailView: View {
         .background(AppColors.background.ignoresSafeArea())
     }
 
-
     private var loadingFullScreenIndicator: some View {
         ZStack {
             AppColors.background

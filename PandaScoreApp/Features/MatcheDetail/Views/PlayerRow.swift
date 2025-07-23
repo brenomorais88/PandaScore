@@ -21,7 +21,6 @@ struct PlayerRow: View {
             PlayerCell(position: .right, player: right)
         }
         .background(Color.clear)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .frame(height: 60)
     }
 }
