@@ -27,27 +27,23 @@ public class MatchDetailViewModel: ObservableObject {
     public func loadDetail() {
         isLoading = true
 
-        let player1ID = self.viewData.team1?.id ?? 0
-        loadPlayer(teamId: player1ID)
+        let id1 = viewData.team1?.id ?? 0
+        let id2 = viewData.team2?.id ?? 0
 
-        let player2ID = self.viewData.team2?.id ?? 0
-        loadPlayer(teamId: player2ID)
-    }
-
-    private func loadPlayer(teamId: Int) {
-        service.fetchPlayers(teamId: teamId)
-            .sink { [weak self] completion in
-                self?.isLoading = false
-                if case let .failure(err) = completion {
-                    self?.error = err
-                }
-            } receiveValue: { [weak self] players in
-                if teamId == self?.viewData.team1?.id {
-                    self?.t1players = players
-                } else {
-                    self?.t2players = players
-                }
+        Publishers.Zip(
+            service.fetchPlayers(teamId: id1),
+            service.fetchPlayers(teamId: id2)
+        )
+        .receive(on: RunLoop.main)
+        .sink { [weak self] completion in
+            self?.isLoading = false
+            if case let .failure(err) = completion {
+                self?.error = err
             }
-            .store(in: &cancellables)
+        } receiveValue: { [weak self] players1, players2 in
+            self?.t1players = players1
+            self?.t2players = players2
+        }
+        .store(in: &cancellables)
     }
 }
