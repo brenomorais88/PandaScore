@@ -34,7 +34,7 @@ public class MatchDetailViewModel: ObservableObject {
             service.fetchPlayers(teamId: id1),
             service.fetchPlayers(teamId: id2)
         )
-        .receive(on: RunLoop.main)
+        .receive(on: DispatchQueue.main)
         .sink { [weak self] completion in
             self?.isLoading = false
             if case let .failure(err) = completion {

@@ -68,7 +68,7 @@ class MatchService: MatchServiceProtocol {
                     print("[MatchService] Partidas carregadas com sucesso.")
                 }
             })
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
