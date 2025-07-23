@@ -107,17 +107,6 @@ struct MatchListView: View {
         }
     }
 
-    private var detailView: some View {
-        HStack {
-            Spacer()
-            ProgressView(LocalizedStrings.MatchList.loading)
-                .padding()
-                .foregroundColor(.white)
-                .tint(.white)
-            Spacer()
-        }
-    }
-
     private func detailView(for matchId: Int) -> some View {
         let service = MatchDetailService()
         let viewData = viewModel.createDetailViewDataForMatch(id: matchId)
